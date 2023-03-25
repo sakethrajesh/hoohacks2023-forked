@@ -27,11 +27,10 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pages: [
+  pages: 
     {
       type: [PageSchema],
     },
-  ],
 });
 const Book = mongoose.models.Book ||mongoose.model("Book", BookSchema);
 
