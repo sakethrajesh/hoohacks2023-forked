@@ -2,31 +2,44 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import Router from 'next/router'
 import { Form, Button } from 'react-bootstrap';
+import { User, Book, Page } from '../models/models';
 
 export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setAuthToken } = useContext(AuthContext);
+    const [username, setUsername] = useState('');
 
-    const handleSignIn = async (event) => {
+    const handleSignUp = async (event) => {
         event.preventDefault();
-        console.log('in here');
+        console.log(`${email}, ${password}`);
+        const newUser = new User({
+            
+        });
+
+
+
         // TODO: Implement the authentication method here
         // Once the user is authenticated, set the token in the auth context
         // const token = await signIn(email, password); // some authentication method that returns a token
-        setAuthToken({token: 'hello', email: email});
         // Redirect the user to the home page
+
+
         
-        Router.push('/');
+        // Router.push('/');
     }
 
     return (
         <div className="container">
             <h1>Sign up</h1>
-            <Form onSubmit={handleSignIn}>
+            <Form onSubmit={handleSignUp}>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)} />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicUsername">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="text" placeholder="Enter username" value={username} onChange={(event) => setEmail(event.target.value)} />
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
