@@ -1,57 +1,42 @@
 import { useContext, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import Router from 'next/router'
-import { Form, Button } from 'react-bootstrap';
-import { User, Book, Page } from '../models/models';
+import UserForm from '../components/UserForm';
+import axios from 'axios';
+import { useAuth } from '@/context/AuthContext';
+import Router  from 'next/router';
 
 export default function SignUp() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
+    const { login } = useAuth();
 
-    const handleSignUp = async (event) => {
-        event.preventDefault();
-        console.log(`${email}, ${password}`);
-        const newUser = new User({
-            
-        });
-
-
-
-        // TODO: Implement the authentication method here
-        // Once the user is authenticated, set the token in the auth context
-        // const token = await signIn(email, password); // some authentication method that returns a token
-        // Redirect the user to the home page
-
-
+    const handleUserFormSubmit = async (userData) => {
         
-        // Router.push('/');
-    }
+        console.log(userData);
+        try {
+            const response = await fetch('/api/createUser', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+              }
+          
+              const data = await response.json();
+              console.log(data);
+        } catch (error) {
+            console.error('Error creating user', error);
+            // Handle errors, e.g., display an error message
+        }
+        login(userData.email, userData.password);
+        Router.push('/')
+
+    };
 
     return (
-        <div className="container">
-            <h1>Sign up</h1>
-            <Form onSubmit={handleSignUp}>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)} />
-                </Form.Group>
-
-                <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Enter username" value={username} onChange={(event) => setEmail(event.target.value)} />
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} />
-                </Form.Group>
-
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
+        <div>
+            <h1>Create User</h1>
+            <UserForm onSubmit={handleUserFormSubmit} />
         </div>
-        // your sign-in form JSX here
     );
 }

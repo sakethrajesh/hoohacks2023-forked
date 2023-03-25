@@ -23,7 +23,7 @@ export default function Home() {
       </Head>
       <main>
 
-        <h1>{user ? `Hello ${user.name}`: "Hello Guest"}</h1>
+        <h1>{user ? `Hello ${user.email}`: "Hello Guest"}</h1>
 
         {user ? <Logout/> : <></>}
              

@@ -17,12 +17,11 @@ const PageSchema = new mongoose.Schema({
   ],
 });
 
-const Page = mongoose.model("Page", PageSchema);
+const Page = mongoose.models.Page || mongoose.model("Page", PageSchema);
 const BookSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    unique: true,
   },
   cover: {
     type: String,
@@ -34,7 +33,7 @@ const BookSchema = new mongoose.Schema({
     },
   ],
 });
-const Book = mongoose.model("Book", BookSchema);
+const Book = mongoose.models.Book ||mongoose.model("Book", BookSchema);
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -52,13 +51,12 @@ const UserSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    required: true,
   },
   books: {
     type: [BookSchema],
   },
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
 
 module.exports = { User, Book, Page };

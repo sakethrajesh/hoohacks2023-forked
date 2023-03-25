@@ -7,10 +7,14 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(email, password);
-    Router.push('/')
+    const error = await login(email, password);
+    if (error) {
+      console.log("wrong!");
+    } else {
+      Router.push('/');
+    }
   };
 
   return (

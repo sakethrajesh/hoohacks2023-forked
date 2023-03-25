@@ -24,9 +24,35 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
 
   const login = async (email, password) => {
+
+    try {
+        const response = await fetch('/api/checkUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+    
+        const data = await response.json();
+        console.log(data);
+        // Handle successful user lookup, e.g., display a success message or log the user in
+      } catch (error) {
+
+        console.error('Error checking user:', error.message); // Log the error on the client-side
+        // Handle errors, e.g., display an error message
+        return true;
+    }
+
     // Replace this with your actual authentication API call
     const user = { email, name: 'John Doe' };
     setUser(user);
+    return false;
+
   };
   const clearUserCookie = () => {
     Cookies.remove('user');
