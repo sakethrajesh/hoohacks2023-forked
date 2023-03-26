@@ -33,7 +33,7 @@ const BookBuilder = () => {
     // loading true
     // pop modal
     setLoading(true);
-    let temp = await segmentStory(textareaRef.current.value, user.email, title);
+    let temp = await segmentStory(story, user.email, title);
     setId(temp);
 
     // change loading false
@@ -132,7 +132,22 @@ const BookBuilder = () => {
             <br></br>
             <br></br>
 
-            <button onClick={() => DoTheMagic(text)}>Do the Magic</button>
+            <button
+              onClick={() => {
+                if (transcript.length > 0) {
+                  DoTheMagic(transcript);
+                  console.log("1");
+                } else if (textareaRef.current.value.length > 0) {
+                  DoTheMagic(textareaRef.current.value);
+                  console.log("2");
+                } else {
+                  console.log("3");
+                  DoTheMagic(textareaRef.current.value);
+                }
+              }}
+            >
+              Do the Magic
+            </button>
           </Container>
         </section>
       )}
