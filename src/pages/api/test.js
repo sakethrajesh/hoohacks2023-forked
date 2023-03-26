@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const config = {
   headers: {
-    Authorization: `Bearer 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`,
+    Authorization: `Bearer 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`,
   },
 };
 
@@ -28,13 +28,13 @@ export async function createImage(prompt) {
   return data.data.data[0].url;
 }
 
-export async function segmentStory(story, userEmail) {
+export async function segmentStory(story, userEmail, Title="princesses") {
   const query = "segment this story into 5 sections labeling each section like Secion X: " + story;
   const bodyParameters = {
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: query }],
   };
-
+  let id = "";
   await axios
     .post("https://api.openai.com/v1/chat/completions", bodyParameters, config)
     .then(async function (data) {
@@ -42,19 +42,20 @@ export async function segmentStory(story, userEmail) {
       const result = data.data.choices[0].message.content;
       const sections = await parseOutline(result);
       const pages = await loopAndGenerate(sections);
-      const cover = await generateCover("princesses");
+      const cover = await generateCover(Title);
 
       const newBook = {
         date : {
             pages: pages,
             cover: cover,
-            title: "this is a book",
+            title: Title,
             associatedSentences: sections,
         },
         name: userEmail
       };
 
-      createBook(newBook);
+    id = await createBook(newBook);
+      
 
       // const newBook = await new Book({
       //     title: "this is a book",
@@ -68,6 +69,7 @@ export async function segmentStory(story, userEmail) {
     .catch((error) => {
       console.error(error);
     });
+    return id;
 }
 
 async function generateCover(topic) {
@@ -128,7 +130,9 @@ const createBook = async (myData) => {
     }
 
     const data = await response.json();
-    console.log(data);
+    console.log(data.book._id);
+
+    return data.book._id;
     // Handle successful book and pages creation, e.g., display a success message or update the UI
   } catch (error) {
     console.error("Error creating book and pages:", error.message); // Log the error on the client-side

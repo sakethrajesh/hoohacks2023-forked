@@ -14,7 +14,7 @@ export default async (req, res) => {
   try {
     console.log(req.body);
     const newBook = await Book.create(req.body["date"]);
-    console.log(newBook._id.toString())
+    // console.log(newBook._id.toString())
 
     const user = await User.findOneAndUpdate(
       { email: req.body["name"] },

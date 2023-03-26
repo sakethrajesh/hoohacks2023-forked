@@ -81,7 +81,7 @@ function Tabs({ album }) {
                     </Alert>
                   </div>
                 ) : (
-                  <Album album={myBooks} />
+                  <Album album={myBooks} shouldBeDelete={true} />
                 )}
               </Tab.Pane>
             ) : (
