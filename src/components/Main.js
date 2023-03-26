@@ -31,7 +31,7 @@ const router = useRouter();
           <br></br>
           <p>
             {user ? (
-              <Button color="primary" className="mx-1 my-2">
+              <Button onClick={() => router.push("/BuildBook")} color="primary" className="mx-1 my-2">
                 Build a Book
               </Button>
             ) : (

@@ -8,10 +8,28 @@ import axios from 'axios';
 
 // Use the fetchBook function when you want to fetch a book by its _id
 
-
 function MyVerticallyCenteredModal({ show, onHide, bookId }) {
     const [book, setBook] = useState(null);
     const [index, setIndex] = useState(0);
+
+    const onSpeechEnd = () => {
+        setIndex(index + 1);
+        console.log(index)
+            
+
+        // Add your custom event handling logic here
+        if (index == book.associatedSentences.length) {
+            return;
+        }
+        speakText(book.associatedSentences[index])
+    };
+    const speakText = (toSpeak) => {
+        
+        const speech = new SpeechSynthesisUtterance(toSpeak);
+        speech.onend = onSpeechEnd;
+        window.speechSynthesis.speak(speech);
+    };
+
 
     const handleSelect = (selectedIndex, e) => {
         setIndex(selectedIndex);
@@ -25,6 +43,7 @@ function MyVerticallyCenteredModal({ show, onHide, bookId }) {
                 console.error(error);
             });
     }, []);
+
 
     return (
         <Modal
@@ -45,7 +64,7 @@ function MyVerticallyCenteredModal({ show, onHide, bookId }) {
                     <Carousel activeIndex={index} onSelect={handleSelect} fade>
                         {book && book.pages.length > 0 && (
                             book.pages.map((item, index) => (
-                                <Carousel.Item>
+                                <Carousel.Item interval={100000}>
                                     <img className="img-fluid" src={item} alt={index} key={index + item} />
 
                                 </Carousel.Item>
@@ -62,7 +81,12 @@ function MyVerticallyCenteredModal({ show, onHide, bookId }) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
+
                 <div className='container text-center'>
+                    {book ? (<button onClick={() => {
+                        speakText(book.associatedSentences[index])
+                    }}>read me!</button>) : (<></>)}
+
                     <p className='mr-auto'>{book ? book.associatedSentences[index] : "loading"}</p>
 
                 </div>
@@ -72,13 +96,15 @@ function MyVerticallyCenteredModal({ show, onHide, bookId }) {
     );
 }
 
-const Details = ({pid}) => {
+const Details = ({ pid }) => {
     const [modalShow, setModalShow] = useState(false);
-    
+
 
     return (
         <>
-            <Button variant="primary" onClick={() => setModalShow(true)}>
+            <Button variant="primary" onClick={() => {
+                setModalShow(true)
+            }}>
                 Launch vertically centered modal
             </Button>
 

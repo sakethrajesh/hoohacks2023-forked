@@ -35,7 +35,7 @@ const Album = ({ album }) => {
                                     <CardBody>
                                         <CardText>{item.title}</CardText>
                                         <div className="d-flex justify-content-between align-items-center">
-                                            <Details pid={item._id}></Details>
+                                            <Details pid={item._id} key={item._id}></Details>
                                             
                                         </div>
                                     </CardBody>

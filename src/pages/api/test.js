@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const config = {
   headers: {
-    Authorization: `Bearer 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`,
+    Authorization: `Bearer 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`,
   },
 };
 
