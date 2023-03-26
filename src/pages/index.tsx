@@ -6,31 +6,20 @@ import { useContext, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Logout from './logout';
 import {createImage, segmentStory} from './api/test.js';
+import albumItems from "../components/album.json"
+import Header from '../components/Header'
+import {Main} from '../components/Main'
 
 const inter = Inter({ subsets: ['latin'] })
 
 const prompt = 'yellow ferrari'
 
 export default function Home() {
-  const [text, setText] = useState('');
-
-  const handleChange = (event) => {
-    setText(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log(text);
-    // Handle form submission here
-    await segmentStory(text, user.email);
-    // console.log(Book.title + "\n");
-    // console.log(Book);
-
-  };
 
   const { user, isLoading } = useAuth();
 
   if (isLoading) return <div>Loading...</div>;
+
   return (
     <>
       <Head>
@@ -39,24 +28,20 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        {/* <button onClick={() => createImage(prompt)}>
-          Hello
-        </button> */}
-        <form onSubmit={handleSubmit}>
-          <label>
-            Input Text:
-            <input type="text" value={text} onChange={handleChange} />
-          </label>
-          <button type="submit">Submit</button>
-        </form>
-        <h1>{user ? `Hello ${user.name}`: "Hello Guest"}</h1>
+      {/* <main>
+    
+    
+    
+    
+      </main> */}
 
-        {user ? <Logout/> : <></>}
-             
+      <div>
+        <Header user={user}/>
+        <Main user={user} album={albumItems}/>
+        {/* <Footer /> */}
+      </div>
 
-        
-      </main>
+
     </>
   )
 }
