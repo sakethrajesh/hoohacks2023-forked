@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
-  const login = async (email, password) => {
+  const login = async (email, password, username="John Doe") => {
 
     try {
         const response = await fetch('/api/checkUser', {
@@ -39,8 +39,10 @@ export const AuthProvider = ({ children }) => {
         }
     
         const data = await response.json();
-        console.log(data);
+        console.log(`boom please work${data}`);
         // Handle successful user lookup, e.g., display a success message or log the user in
+        const user = { email, name: data.user.name };
+        setUser(user);
       } catch (error) {
 
         console.error('Error checking user:', error.message); // Log the error on the client-side
@@ -49,8 +51,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     // Replace this with your actual authentication API call
-    const user = { email, name: 'John Doe' };
-    setUser(user);
+    
     return false;
 
   };

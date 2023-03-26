@@ -11,7 +11,13 @@ import {
     Row
 } from 'reactstrap';
 
+import Details from '../pages/books/[pids]'
+
 const Album = ({ album }) => {
+    console.log(`my album: ${album[0]}`)
+
+
+
     return (
         <div className="album py-5 bg-light">
             <Container>
@@ -23,31 +29,14 @@ const Album = ({ album }) => {
                                     <CardImg
                                         top
                                         width="100%"
-                                        src={item.src}
-                                        alt={item.altText}
+                                        src={item.page}
+                                        alt={key + "please"}
                                     />
                                     <CardBody>
-                                        <CardText>{item.description}</CardText>
+                                        <CardText>{item.title}</CardText>
                                         <div className="d-flex justify-content-between align-items-center">
-                                            <ButtonGroup>
-                                                <Button
-                                                    outline
-                                                    color="secondary"
-                                                    size="sm"
-                                                >
-                                                    View
-                                                </Button>
-                                                <Button
-                                                    outline
-                                                    color="secondary"
-                                                    size="sm"
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </ButtonGroup>
-                                            <small className="text-muted">
-                                                {item.time}
-                                            </small>
+                                            <Details pid={item._id}></Details>
+                                            
                                         </div>
                                     </CardBody>
                                 </Card>

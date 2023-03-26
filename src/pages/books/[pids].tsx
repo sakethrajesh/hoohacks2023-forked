@@ -72,24 +72,9 @@ function MyVerticallyCenteredModal({ show, onHide, bookId }) {
     );
 }
 
-const Details = () => {
-    const router = useRouter()
+const Details = ({pid}) => {
     const [modalShow, setModalShow] = useState(false);
-    const { q } = router.query
-    console.log(q);
-    const [searchQuery, setSearchQuery] = useState("");
-    useEffect(() => {
-        if (router.isReady) {
-            // Code using query
-            console.log(router.query.pids);
-        }
-
-    }, [router.isReady]);
-
-    if (!router.isReady) {
-        return (<div>loading.....</div>);
-    }
-
+    
 
     return (
         <>
@@ -100,7 +85,7 @@ const Details = () => {
             <MyVerticallyCenteredModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
-                bookId={router.query.pids}
+                bookId={pid}
             />
         </>
     );

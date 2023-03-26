@@ -4,22 +4,22 @@ import {
     Col,
     Collapse,
     Container,
-    Navbar,
     NavbarToggler,
     NavbarBrand,
     Row
 } from 'reactstrap';
+import Navbar from 'react-bootstrap/Navbar';
 
 const Header = ({ user }) => {
     return (
         <header>
-            <Navbar color="dark" dark>
+            <Navbar bg="dark" variant="dark" className='pb-3'>
                 <Container>
-                    <NavbarBrand
+                    <Navbar.Brand
                         href="/"
                         className="d-flex align-items-center mr-auto">
-                        <strong>The Narator</strong>
-                    </NavbarBrand>
+                        The Narator
+                    </Navbar.Brand>
                     {user ? <Logout/> : <></>}
                 </Container>
             </Navbar>
