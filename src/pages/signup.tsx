@@ -28,14 +28,13 @@ export default function SignUp() {
             console.error('Error creating user', error);
             // Handle errors, e.g., display an error message
         }
-        login(userData.email, userData.password);
+        login(userData.email, userData.password, userData.username);
         Router.push('/')
 
     };
 
     return (
         <div>
-            <h1>Create User</h1>
             <UserForm onSubmit={handleUserFormSubmit} />
         </div>
     );
