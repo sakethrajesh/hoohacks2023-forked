@@ -11,11 +11,11 @@ function Tabs({album}) {
       <Col>
         <Row >
           <Nav justify variant="pills" className="album pt-3 bg-light">
-            <Nav.Item style={{marginLeft:300, marginRight:100}}>
-              <Nav.Link eventKey="first">Tab 1</Nav.Link>
+            <Nav.Item style={{marginLeft:300, marginRight:25}}>
+              <Nav.Link eventKey="first">My Books</Nav.Link>
             </Nav.Item>
-            <Nav.Item style={{marginLeft:100, marginRight:300}}>
-              <Nav.Link eventKey="second">Tab 2</Nav.Link>
+            <Nav.Item style={{marginLeft:25, marginRight:300}}>
+              <Nav.Link eventKey="second">Explore Books</Nav.Link>
             </Nav.Item>
           </Nav>
         </Row>
