@@ -58,7 +58,7 @@ const BookBuilder = () => {
           </p>
           <br></br>
 
-          <textarea name="postContent" value = {transcript} rows={10} cols={100}></textarea>
+          <textarea name="postContent" defaultValue = {transcript} rows={10} cols={100}></textarea>
 
           <p>Microphone: {listening ? 'on' : 'off'}</p>
             <button
