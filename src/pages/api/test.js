@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const config = {
   headers: {
-    Authorization: `Bearer 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`,
+    Authorization: `Bearer ${process.env.API_URL}`,
   },
 };
 
