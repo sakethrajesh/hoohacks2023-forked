@@ -29,7 +29,7 @@ const Album = ({ album }) => {
                                     <CardImg
                                         top
                                         width="100%"
-                                        src={item.page}
+                                        src={item.cover}
                                         alt={key + "please"}
                                     />
                                     <CardBody>

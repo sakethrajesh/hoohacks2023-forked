@@ -1,47 +1,54 @@
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import Router  from 'next/router';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
-import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
-import { segmentStory } from './api/test'
-import { FloatingLabel, Form } from 'react-bootstrap';
-import { Container } from 'reactstrap';
-import Header from '../components/Header'
+import { useState } from "react";
+import { useRef } from 'react';
+import { useAuth } from "../context/AuthContext";
+import Router from "next/router";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { createSpeechlySpeechRecognition } from "@speechly/speech-recognition-polyfill";
+import { segmentStory } from "./api/test";
+import { FloatingLabel, Form } from "react-bootstrap";
+import { Container } from "reactstrap";
+import Header from "../components/Header";
 
-const appId = 'c57ab291-c024-4587-a197-33ad0ad2a486';
+const appId = "c57ab291-c024-4587-a197-33ad0ad2a486";
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
 SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 
 const BookBuilder = () => {
-    const { user } = useAuth();
+    const [text, setText] =  useState('');
+    const textareaRef = useRef(null);
+  const { user } = useAuth();
 
-    const DoTheMagic = async (story) => {
-        if (story.length < 10) {
-            console.log('need more words')
-        }
-        // loading true
-        // pop modal
-        await segmentStory(story, user.email);
-        // change loading false
+  const DoTheMagic = async (story) => {
+    console.log(text)
+    if (story.length < 10) {
+      console.log("need more words");
     }
+    // loading true
+    // pop modal
+    await segmentStory(textareaRef.current.value, user.email);
+    // change loading false
+  };
 
-    const {
-        transcript,
-        listening,
-        resetTranscript,
-        browserSupportsSpeechRecognition
-      } = useSpeechRecognition();
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
 
-      const startListening = () => SpeechRecognition.startListening({ continuous: true });
-    
-    //   if (!browserSupportsSpeechRecognition) {
-    //     return (<main>Browser doesn't support speech recognition.</main>);
-    //   }
-    
-      return (
-        <>
-        <Header/>
-        <section
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
+
+  //   if (!browserSupportsSpeechRecognition) {
+  //     return (<main>Browser doesn't support speech recognition.</main>);
+  //   }
+
+  return (
+    <>
+      <Header />
+      <section
         className="jumbotron text-center"
         style={{ marginTop: 80, marginLeft: 200, marginRight: 200 }}
       >
@@ -58,31 +65,35 @@ const BookBuilder = () => {
           </p>
           <br></br>
 
-          <textarea name="postContent" defaultValue = {transcript} rows={10} cols={100}></textarea>
+          <textarea
+            name="postContent"
+            id="myTextArea"
+            defaultValue={transcript}
+            rows={10}
+            cols={100}
+            onChange={(value) => {setText(value)}}
+            ref={textareaRef}
+          ></textarea>
 
-          <p>Microphone: {listening ? 'on' : 'off'}</p>
-            <button
-                onTouchStart={startListening}
-                onMouseDown={startListening}
-                onTouchEnd={SpeechRecognition.stopListening}
-                onMouseUp={SpeechRecognition.stopListening}
-            >Hold to talk</button>
-            <button onClick={resetTranscript}>
-                reset 
-            </button>
+          <p>Microphone: {listening ? "on" : "off"}</p>
+          <button
+            onTouchStart={startListening}
+            onMouseDown={startListening}
+            onTouchEnd={SpeechRecognition.stopListening}
+            onMouseUp={SpeechRecognition.stopListening}
+          >
+            Hold to talk
+          </button>
+          <button onClick={resetTranscript}>reset</button>
 
-            <br></br>
-            <br></br>
+          <br></br>
+          <br></br>
 
-            <button onClick={() => DoTheMagic(transcript)}>
-                Do the Magic 
-            </button>
+          <button onClick={() => DoTheMagic(text)}>Do the Magic</button>
         </Container>
       </section>
-      </>
-
-      );
-    
+    </>
+  );
 };
 
 export default BookBuilder;

@@ -23,7 +23,7 @@ const Header = ({ user }) => {
                     {user ? <Logout/> : <></>}
                 </Container>
             </Navbar>
-            <NavbarToggler onClick={console.log('hi')} className="mr-2" />
+            <NavbarToggler className="mr-2" />
         </header>
     );
 };

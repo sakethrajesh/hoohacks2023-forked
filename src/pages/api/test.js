@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const config = {
   headers: {
-    Authorization: `Bearer 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`,
+    Authorization: `Bearer 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`,
   },
 };
 
@@ -29,7 +29,7 @@ export async function createImage(prompt) {
 }
 
 export async function segmentStory(story, userEmail) {
-  const query = "segment this story into 2 sections " + story;
+  const query = "segment this story into 5 sections labeling each section like Secion X: " + story;
   const bodyParameters = {
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: query }],
