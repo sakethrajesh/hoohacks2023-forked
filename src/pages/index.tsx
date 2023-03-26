@@ -22,7 +22,7 @@ export default function Home() {
     event.preventDefault();
     console.log(text);
     // Handle form submission here
-    await segmentStory(text);
+    await segmentStory(text, user.email);
     // console.log(Book.title + "\n");
     // console.log(Book);
 

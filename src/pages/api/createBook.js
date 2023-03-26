@@ -1,6 +1,8 @@
 import connectToDB from "../../database/connect";
-import { User } from "../../models/models";
+import { Book, User } from "../../models/models";
 import axios from "axios";
+
+import { useAuth } from "../../context/AuthContext";
 
 export default async (req, res) => {
   if (req.method !== "POST") {
@@ -10,18 +12,19 @@ export default async (req, res) => {
   await connectToDB();
 
   try {
-    const { username, email, password } = req.body;
-    console.log(username);
-    console.log(email);
-    console.log(password);
-    const newUser = await User.create({
-      name: username,
-      email: email,
-      password: password,
-    });
+    console.log(req.body);
+    const newBook = await Book.create(req.body["date"]);
+    console.log(newBook._id.toString())
+
+    const user = await User.findOneAndUpdate(
+      { email: req.body["name"] },
+      { $push: { books: newBook._id.toString() } },
+      { new: true }
+    );
+
     res
       .status(201)
-      .json({ message: "User created successfully", user: newUser });
+      .json({ message: "User created successfully", book: newBook });
   } catch (error) {
     console.error("Error creating user:", error); // Log the error on the server-side
     res

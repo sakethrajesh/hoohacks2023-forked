@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const config = {
   headers: {
-    Authorization: `Bearer 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`,
+    Authorization: `Bearer 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`,
   },
 };
 
@@ -25,11 +25,10 @@ export async function createImage(prompt) {
       console.log("end error!!!!!!!!!");
       return "PLEASE AHUDLASKD";
     });
-    return data.data.data[0].url;
-
+  return data.data.data[0].url;
 }
 
-export async function segmentStory(story) {
+export async function segmentStory(story, userEmail) {
   const query = "segment this story into 2 sections " + story;
   const bodyParameters = {
     model: "gpt-3.5-turbo",
@@ -44,6 +43,19 @@ export async function segmentStory(story) {
       const sections = await parseOutline(result);
       const pages = await loopAndGenerate(sections);
       const cover = await generateCover("princesses");
+
+      const newBook = {
+        date : {
+            pages: pages,
+            cover: cover,
+            title: "this is a book",
+            associatedSentences: sections,
+        },
+        name: userEmail
+      };
+
+      createBook(newBook);
+
       // const newBook = await new Book({
       //     title: "this is a book",
       //     cover: cover,
@@ -66,35 +78,27 @@ async function generateCover(topic) {
     n: 1,
   };
 
-  await axios
+  const data = await axios
     .post(
       "https://api.openai.com/v1/images/generations",
       bodyParameters,
       config
     )
-    .then(function (data) {
-      console.log(data.data.data[0].url);
-      // should return url
-      return data.data.data[0].url;
-    })
     .catch((error) => {
       console.error(error);
     });
+  return data.data.data[0].url;
 }
 
 async function loopAndGenerate(sections) {
   // array of images (pages)
   const pages = [];
   for (let i = 0; i < sections.length; i++) {
-    
     const url = await createImage(sections[i]);
     console.log(url);
 
-    pages.push({
-      pageNumber: i + 1,
-      image: url,
-      associatedSentences: sections[i],
-    });
+    pages.push(url);
+
     // const newPage = new Page({
     //     pageNumber: i + 1,
     //     image: url,
@@ -105,9 +109,32 @@ async function loopAndGenerate(sections) {
   }
   // array of pages
   console.log(pages);
-  createPages(pages);
+  //   createPages(pages);
   return pages;
 }
+
+const createBook = async (myData) => {
+  try {
+    const response = await fetch("/api/createBook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(myData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    // Handle successful book and pages creation, e.g., display a success message or update the UI
+  } catch (error) {
+    console.error("Error creating book and pages:", error.message); // Log the error on the client-side
+    // Handle errors, e.g., display an error message
+  }
+};
 
 const createPages = async (pagesData) => {
   try {
@@ -133,7 +160,7 @@ const createPages = async (pagesData) => {
 };
 
 function parseOutline(text) {
-  const sections = text.split("\n\n");
+  const sections = text.split(/Section \d+: /).slice(1);
   return sections.map((section) => section.trim());
 }
 

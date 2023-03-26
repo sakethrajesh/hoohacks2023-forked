@@ -1,23 +1,23 @@
 const mongoose = require("mongoose");
 
-const PageSchema = new mongoose.Schema({
-  pageNumber: {
-    type: Number,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  associatedSentences: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
-});
+// const PageSchema = new mongoose.Schema({
+//   pageNumber: {
+//     type: Number,
+//     required: true,
+//   },
+//   image: {
+//     type: String,
+//     required: true,
+//   },
+//   associatedSentences: [
+//     {
+//       type: String,
+//       required: true,
+//     },
+//   ],
+// });
 
-const Page = mongoose.models.Page || mongoose.model("Page", PageSchema);
+// const Page = mongoose.models.Page || mongoose.model("Page", PageSchema);
 const BookSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -27,12 +27,17 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pages: 
+  pages: {
+    type: [String],
+  },
+  associatedSentences: [
     {
-      type: [PageSchema],
+      type: String,
+      required: true,
     },
+  ],
 });
-const Book = mongoose.models.Book ||mongoose.model("Book", BookSchema);
+const Book = mongoose.models.Book || mongoose.model("Book", BookSchema);
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -52,10 +57,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   books: {
-    type: [BookSchema],
+    type: [String],
+    default: [],
   },
 });
 
 const User = mongoose.models.User || mongoose.model("User", UserSchema);
 
-module.exports = { User, Book, Page };
+module.exports = { User, Book };
